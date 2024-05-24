@@ -1,23 +1,26 @@
 <?php
 
-require_once 'models/Hike.php';
+use App\Models\Hike;
 require_once 'database/Database.php';
 
 class HikeController {
-    public function index() {
+    public function index(): void
+    {
         $hike = new Hike();
         $hikes = $hike->getAllHikes();
-        include 'views/hikes/list.php';
+        include '../views/hikes/list.php';
     }
 
-    public function detail() {
+    public function detail() : void
+    {
         $id = $_GET['id'];
         $hike = new Hike();
         $hikeDetail = $hike->getHikeById($id);
-        include 'views/hikes/detail.php';
+        include '../views/hikes/detail.php';
     }
 
-    public function create() {
+    public function create() : void
+    {
         if (!isset($_SESSION['user_id'])) {
             header('Location: index.php?controller=user&action=login');
             exit;
@@ -33,14 +36,15 @@ class HikeController {
                 header('Location: index.php');
             } else {
                 $error = "Failed to create hike.";
-                include 'views/hikes/create.php';
+                include '../views/hikes/create.php';
             }
         } else {
-            include 'views/hikes/create.php';
+            include '../views/hikes/create.php';
         }
     }
 
-    public function edit() {
+    public function edit() : void
+    {
         if (!isset($_SESSION['user_id'])) {
             header('Location: index.php?controller=user&action=login');
             exit;
@@ -67,11 +71,12 @@ class HikeController {
                 include 'views/hikes/edit.php';
             }
         } else {
-            include 'views/hikes/edit.php';
+            include '../views/hikes/edit.php';
         }
     }
 
-    public function delete() {
+    public function delete() : void
+    {
         if (!isset($_SESSION['user_id'])) {
             header('Location: index.php?controller=user&action=login');
             exit;
@@ -85,8 +90,8 @@ class HikeController {
             header('Location: index.php');
         } else {
             $error = "Failed to delete hike.";
-            include 'views/hikes/list.php';
+            include '../views/hikes/list.php';
         }
     }
 }
-?>
+

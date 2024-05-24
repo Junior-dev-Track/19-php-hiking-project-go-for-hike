@@ -1,9 +1,15 @@
 <?php
+
+namespace App\Models;
+
+use App\Database\Database;
+
 class Hike {
     private $db;
 
     public function __construct() {
-        $this->db = Database::getInstance()->getConnection();
+        $msg = "Hike model";
+        $this->db = Database::connect($msg);
     }
 
     public function getAllHikes() {
