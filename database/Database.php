@@ -1,4 +1,11 @@
-//<?php
+<?php
+//require_once __DIR__ . '/../.env';
+
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+require_once __DIR__ . './src/controllers/HikeController.php';
+
 class Database {
    private static $instance = null;
    private $connection;
