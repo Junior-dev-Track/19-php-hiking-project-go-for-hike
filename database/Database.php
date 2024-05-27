@@ -7,8 +7,13 @@ use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = Dotenv::createImmutable('../..');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+
 $dotenv->load();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 /**
  * Classe DBLink : gestionnaire de la connexion à la base de données
@@ -19,14 +24,14 @@ class Database {
     /**
      * Se connecte à la base de données
      * @return PDO|false Objet de liaison à la base de données ou false si erreur
-     *@var string $message ensemble des messages à retourner à l'utilisateur, séparés par un saut de ligne
+     *  @var string $message ensemble des messages à retourner à l'utilisateur, séparés par un saut de ligne
      * @var string $base Nom de la base de données
      */
     public static function connect(string &$message): bool|PDO
     {
         try {
-        $link = new PDO('mysql:host=' . getenv('MYHOST') . ';dbname=' . getenv('BD') . ';charset=UTF8', getenv('MYUSER'), getenv('MYPASS'));
-        $link->exec("set names utf8");
+            $link = new PDO('mysql:host=' . getenv('MYHOST') . ';dbname=' . getenv('MYBD') . ';charset=UTF8', getenv('MYUSER'), getenv('MYPASS'));
+            $link->exec("set names utf8");
             $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             $message .= $e->getMessage().'<br>';
@@ -39,7 +44,8 @@ class Database {
      * Déconnexion de la base de données
      * @var PDO $link Objet de liaison à la base de données
      */
-    public static function disconnect (&$link) {
+    public static function disconnect (PDO &$link): void
+    {
         $link = null;
     }
 }

@@ -1,19 +1,25 @@
 <?php
+
+namespace App\Models;
+use App\Database\Database;
 class User {
-    private $db;
+    private bool|\PDO $db;
 
     public function __construct() {
-        $this->db = Database::getInstance()->getConnection();
+        $msg = "User model";
+        $this->db = Database::connect($msg);
     }
 
-    public function register($username, $password) {
+    public function register($username, $password): bool
+    {
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
         $stmt = $this->db->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
         $stmt->bind_param("ss", $username, $passwordHash);
         return $stmt->execute();
     }
 
-    public function login($username, $password) {
+    public function login($username, $password): bool
+    {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
@@ -27,7 +33,8 @@ class User {
         return false;
     }
 
-    public function logout() {
+    public function logout(): void
+    {
         session_destroy();
     }
 }

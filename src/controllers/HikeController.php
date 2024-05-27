@@ -6,8 +6,8 @@ require_once 'database/Database.php';
 class HikeController {
     public function index(): void
     {
-        $hike = new Hike();
-        $hikes = $hike->getAllHikes();
+        $hikes = new Hike();
+        $allHikes = $hikes->getAllHikes();
         include '../views/hikes/list.php';
     }
 
