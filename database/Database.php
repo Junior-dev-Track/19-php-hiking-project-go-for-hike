@@ -1,6 +1,5 @@
 <?php
 namespace App\Database;
-require '.env';
 use PDO;
 use PDOException;
 use Dotenv\Dotenv;
@@ -30,7 +29,7 @@ class Database {
     public static function connect(string &$message): bool|PDO
     {
         try {
-            $link = new PDO('mysql:host=' . getenv('MYHOST') . ';dbname=' . getenv('MYBD') . ';charset=UTF8', getenv('MYUSER'), getenv('MYPASS'));
+            $link = new PDO('mysql:host=' . $_ENV['MYHOST'] . ';dbname=' . $_ENV['MYBD'] . ';charset=UTF8', $_ENV['MYUSER'], $_ENV['MYPASS']);
             $link->exec("set names utf8");
             $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {

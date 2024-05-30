@@ -1,36 +1,53 @@
 <?php
+
+use App\Models\User;
+
 class UserController {
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = trim($_POST['username']);
+            $password = trim($_POST['password']);
 
             $user = new User();
             if ($user->login($username, $password)) {
                 header('Location: index.php');
             } else {
                 $error = "Invalid login credentials.";
-                include 'views/users/login.php';
+                include __DIR__ . '/../views/users/login.php';
             }
         } else {
-            include 'views/users/login.php';
+            include __DIR__ . '/../views/users/login.php';
         }
     }
 
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = trim($_POST['username']);
+            $password = trim($_POST['password']);
+            $firstname = trim($_POST['firstname']);
+            $lastname = trim($_POST['lastname']);
+            $mail = trim($_POST['mail']);
+            $confirmPassword = trim($_POST['confirm_password']);
+            $passwordHash = password_hash(trim($password), PASSWORD_DEFAULT);
+            if ($password != $confirmPassword) {
+                $error = "Passwords do not match.";
+                include __DIR__ . '/../views/users/register.php';
+                exit;
+            }
 
             $user = new User();
-            if ($user->register($username, $password)) {
-                header('Location: index.php?controller=user&action=login');
+            $id = $user->register($firstname, $lastname, $username, $mail, $password);
+            if ($id > 0) {
+                session_start();
+                $_SESSION['username'] = $username;
+                $_SESSION['user_id'] = $id;
+                header('Location: index.php');
             } else {
                 $error = "Registration failed.";
-                include 'views/users/register.php';
+                include __DIR__ . '/../views/users/register.php';
             }
         } else {
-            include 'views/users/register.php';
+            include __DIR__ . '/../views/users/register.php';
         }
     }
 
@@ -40,4 +57,4 @@ class UserController {
         header('Location: index.php?controller=user&action=login');
     }
 }
-?>
+

@@ -1,12 +1,20 @@
-<?php include 'views/includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 
 <h1>Hikes</h1>
+<?php
+if (isset($_SESSION['username'])) {
+    echo "<p> Bonjour " . $_SESSION['username'] . "</p>";
+}
+?>
 <ul>
-    <?php foreach ($hikes as $hike): ?>
-        <li>
-            <a href="index.php?controller=hike&action=detail&id=<?= $hike['id'] ?>"><?= $hike['name'] ?></a>
-        </li>
-    <?php endforeach; ?>
-</ul>
+    <?php
+    foreach ($hikes as $hike){
+        echo "<li>";
+         echo "<a href='index.php?controller=hike&action=detail&id=" . $hike["id"] . "'>" . $hike["name"] . "</a>";
+        echo "</li>";
+    }
 
-<?php include 'views/includes/footer.php'; ?>
+
+echo "</ul>";
+
+include __DIR__ . '/../includes/footer.php'; ?>

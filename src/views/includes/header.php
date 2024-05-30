@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My MVC App</title>
+    <title>GO for hike</title>
     <link rel="stylesheet" href="path/to/your/styles.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <nav>
         <ul>
             <li><a href="index.php">Home</a></li>
-            <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if (isset($_SESSION['username'])): ?>
                 <li><a href="index.php?controller=hike&action=create">Add Hike</a></li>
                 <li><a href="index.php?controller=user&action=logout">Logout</a></li>
             <?php else: ?>

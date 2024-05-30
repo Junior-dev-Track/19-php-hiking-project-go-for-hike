@@ -6,9 +6,9 @@ require_once 'database/Database.php';
 class HikeController {
     public function index(): void
     {
-        $hikes = new Hike();
-        $allHikes = $hikes->getAllHikes();
-        include '../views/hikes/list.php';
+        $hikeModel = new Hike();
+        $hikes = $hikeModel->getAllHikes(); // Changed variable name to $hikes
+        include __DIR__ . '/../views/hikes/list.php';
     }
 
     public function detail() : void
@@ -16,7 +16,7 @@ class HikeController {
         $id = $_GET['id'];
         $hike = new Hike();
         $hikeDetail = $hike->getHikeById($id);
-        include '../views/hikes/detail.php';
+        include __DIR__ . '/../views/hikes/detail.php';
     }
 
     public function create() : void
@@ -36,10 +36,10 @@ class HikeController {
                 header('Location: index.php');
             } else {
                 $error = "Failed to create hike.";
-                include '../views/hikes/create.php';
+                include __DIR__ . '/../views/hikes/create.php';
             }
         } else {
-            include '../views/hikes/create.php';
+            include __DIR__ . '/../views/hikes/create.php';
         }
     }
 
@@ -54,7 +54,7 @@ class HikeController {
         $hike = new Hike();
         $hikeDetail = $hike->getHikeById($id);
 
-        if ($_SESSION['user_id'] != $hikeDetail['user_id']) {
+        if ($_SESSION['user_id'] != $hikeDetail['creatorId']) {
             header('Location: index.php');
             exit;
         }
@@ -68,7 +68,7 @@ class HikeController {
                 header('Location: index.php');
             } else {
                 $error = "Failed to update hike.";
-                include 'views/hikes/edit.php';
+                include __DIR__ . '/../views/hikes/edit.php';
             }
         } else {
             include '../views/hikes/edit.php';
@@ -90,7 +90,7 @@ class HikeController {
             header('Location: index.php');
         } else {
             $error = "Failed to delete hike.";
-            include '../views/hikes/list.php';
+            include __DIR__ . '/../views/hikes/list.php';
         }
     }
 }
